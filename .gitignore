@@ -1,0 +1,4 @@
+# config.json keeps each computer's own capture area
+config.json
+__pycache__/
+*.pyc
