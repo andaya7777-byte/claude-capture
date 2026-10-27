@@ -57,7 +57,13 @@ except ImportError as e:
     sys.exit(1)
 
 # ---------------------------------------------------------------- 설정
-APP_DIR = Path(__file__).resolve().parent
+# 실행파일(exe)로 묶였을 때: 설정은 exe 옆에, 그림 파일은 exe 속 임시 폴더에서 찾음
+if getattr(sys, "frozen", False):
+    APP_DIR = Path(sys.executable).resolve().parent
+    RES_DIR = Path(sys._MEIPASS)
+else:
+    APP_DIR = Path(__file__).resolve().parent
+    RES_DIR = APP_DIR
 CONFIG_FILE = APP_DIR / "config.json"
 SAVE_DIR = Path.home() / "Pictures" / "클로드캡처"
 
@@ -243,7 +249,7 @@ class App:
     @staticmethod
     def make_icon():
         try:
-            return Image.open(APP_DIR / "icon.png").convert("RGBA").resize((64, 64), Image.LANCZOS)
+            return Image.open(RES_DIR / "icon.png").convert("RGBA").resize((64, 64), Image.LANCZOS)
         except Exception:
             pass
         img = Image.new("RGBA", (64, 64), (0, 0, 0, 0))
